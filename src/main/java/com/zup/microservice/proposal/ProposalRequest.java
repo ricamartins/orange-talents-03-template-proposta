@@ -15,6 +15,9 @@ public class ProposalRequest {
 	@NotBlank @CPForCNPJ @Pattern(regexp="[0-9]+", message="Deve conter apenas dígitos")
 	final String document;
 	
+	@NotBlank
+	final String name;
+	
 	@NotBlank @Email
 	final String email;
 	
@@ -24,16 +27,17 @@ public class ProposalRequest {
 	@NotNull @Positive
 	final BigDecimal salary;
 
-	public ProposalRequest(@NotBlank @Pattern(regexp = "[0-9]+") String document, @NotBlank @Email String email,
-			@NotBlank String address, @NotNull @Positive BigDecimal salary) {
+	public ProposalRequest(@NotBlank @Pattern(regexp = "[0-9]+") String document, @NotBlank String name, 
+			@NotBlank @Email String email, @NotBlank String address, @NotNull @Positive BigDecimal salary) {
 		this.document = document;
+		this.name = name;
 		this.email = email;
 		this.address = address;
 		this.salary = salary;
 	}
 
 	public Proposal convert() {
-		return new Proposal(document, email, address, salary);
+		return new Proposal(document, name, email, address, salary);
 	}
 	
 }
