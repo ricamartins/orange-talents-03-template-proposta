@@ -15,5 +15,11 @@ public class ResponseError {
 		this.field = fieldError.getField();
 		this.message = fieldError.getDefaultMessage();
 	}
+
+	public ResponseError(String fieldError) {
+		String[] errorPair = fieldError.split(":");
+		this.field = errorPair[0];
+		this.message = errorPair[1];
+	}
 	
 }
