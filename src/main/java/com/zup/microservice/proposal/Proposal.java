@@ -1,9 +1,12 @@
 package com.zup.microservice.proposal;
 
 import java.math.BigDecimal;
+import java.util.function.Function;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +14,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @Entity
 @Table(name="tb_proposals")
@@ -35,6 +41,9 @@ public class Proposal {
 	@NotNull
 	private BigDecimal salary;
 
+	@Enumerated(EnumType.STRING)
+	private ProposalStatus status;
+	
 	public Proposal() {}
 
 	public Proposal(@NotBlank String document, @NotBlank String name, @NotBlank @Email String email, @NotBlank String address,
@@ -48,5 +57,36 @@ public class Proposal {
 	
 	public Long getId() {
 		return id;
+	}
+	
+	public String getDocument() {
+		return document;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setStatus(String solicitationStatus) {
+		this.status = ProposalStatus.convert(solicitationStatus);
+	}
+	
+	public <R> R map(Function<Proposal, R> function) {
+		return function.apply(this);
+	}
+	
+	public enum ProposalStatus {
+		NAO_ELEGIVEL, ELEGIVEL;
+		
+		public static ProposalStatus convert(String solicitationStatus) {
+			switch (solicitationStatus) {
+				case "COM_RESTRICAO":
+					return NAO_ELEGIVEL;
+				case "SEM_RESTRICAO":
+					return ELEGIVEL;
+				default:
+					throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "erro:Indisponibilidade de serviço");
+			}
+		}
 	}
 }

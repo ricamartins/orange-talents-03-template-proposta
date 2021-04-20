@@ -18,9 +18,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class ProposalController {
 
 	private ProposalRepository repository;
-
-	public ProposalController(ProposalRepository repository) {
+	private FinancialAnalysisApi financialAPI;
+	
+	public ProposalController(ProposalRepository repository, FinancialAnalysisApi financialAPI) {
 		this.repository = repository;
+		this.financialAPI = financialAPI;
 	}
 	
 	@PostMapping
@@ -29,8 +31,16 @@ public class ProposalController {
 		if (repository.findByDocument(request.document).isPresent())
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "document:Já há uma proposta atrelada a este documento");
 		
-		Proposal proposal = repository.save(request.convert());
+		Proposal proposal = repository.save(request.toEntity());
+
+		FinancialAnalysisSolicitation solicitation = financialAPI.analyse(proposal.map(FinancialAnalysisSolicitation::new));
+
+		proposal.setStatus(solicitation.status);
+		
+		repository.save(proposal);
+		
 		URI uri = uriBuilder.path("/proposals/{id}").build(proposal.getId());
 		return ResponseEntity.created(uri).build();
 	}
+
 }

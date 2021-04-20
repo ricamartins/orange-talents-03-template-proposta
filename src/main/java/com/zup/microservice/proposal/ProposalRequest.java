@@ -36,7 +36,7 @@ public class ProposalRequest {
 		this.salary = salary;
 	}
 
-	public Proposal convert() {
+	public Proposal toEntity() {
 		return new Proposal(document, name, email, address, salary);
 	}
 	
