@@ -3,6 +3,7 @@ package com.zup.microservice.proposal;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +19,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.zup.microservice.card.Card;
 
 @Entity
 @Table(name="tb_proposals")
@@ -43,7 +47,14 @@ public class Proposal {
 
 	@Enumerated(EnumType.STRING)
 	private ProposalStatus status;
+
+	@OneToOne(cascade=CascadeType.ALL)
+	private Card card;
 	
+	/*
+	 * hibernate only
+	 */
+	@Deprecated
 	public Proposal() {}
 
 	public Proposal(@NotBlank String document, @NotBlank String name, @NotBlank @Email String email, @NotBlank String address,
@@ -67,8 +78,16 @@ public class Proposal {
 		return name;
 	}
 	
+	public void setCard(Card card) {
+		this.card = card;
+	}
+	
 	public void setStatus(String solicitationStatus) {
 		this.status = ProposalStatus.convert(solicitationStatus);
+	}
+	
+	public boolean isEligible() {
+		return status == ProposalStatus.ELEGIVEL;
 	}
 	
 	public <R> R map(Function<Proposal, R> function) {
@@ -89,4 +108,5 @@ public class Proposal {
 			}
 		}
 	}
+	
 }
