@@ -1,12 +1,15 @@
 package com.zup.microservice.proposal;
 
 import java.net.URI;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +39,17 @@ public class ProposalController {
 		this.cardApi = cardApi;
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<ProposalResponse> getById(@PathVariable Long id) {
+		Optional<Proposal> proposal = repository.findById(id);
+		if (proposal.isEmpty())
+			return ResponseEntity.notFound().build();
+			
+		return ResponseEntity.ok(proposal.get().map(ProposalResponse::new));
+	}
+	
 	@PostMapping
-	public ResponseEntity<Void> createProposal(@RequestBody @Valid ProposalRequest request, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<Void> create(@RequestBody @Valid ProposalRequest request, UriComponentsBuilder uriBuilder) {
 		
 		if (repository.findByDocument(request.document).isPresent())
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "document:Já há uma proposta atrelada a este documento");
@@ -56,9 +68,9 @@ public class ProposalController {
 		URI uri = uriBuilder.path("/proposals/{id}").build(proposal.getId());
 		return ResponseEntity.created(uri).build();
 	}
-
+	
 	@Scheduled(fixedDelay=5000)
-	public void updateProposalsCardId() {
+	public void updateProposalsCard() {
 		repository.findAllByStatusAndCardIsNull(ProposalStatus.ELEGIVEL).stream()
 			.forEach(proposal -> {
 				try {

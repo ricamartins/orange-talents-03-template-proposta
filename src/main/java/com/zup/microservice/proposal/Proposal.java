@@ -77,9 +77,21 @@ public class Proposal {
 	public String getName() {
 		return name;
 	}
+
+	public String getEmail() {
+		return email;
+	}
 	
 	public void setCard(Card card) {
 		this.card = card;
+	}
+	
+	public boolean hasCard() {
+		return card != null;
+	}
+	
+	public ProposalStatus getStatus() {
+		return status;
 	}
 	
 	public void setStatus(String solicitationStatus) {
