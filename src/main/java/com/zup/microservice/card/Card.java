@@ -1,9 +1,13 @@
 package com.zup.microservice.card;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,15 +26,23 @@ public class Card {
 	@OneToOne(mappedBy="card")
 	private Proposal proposal;
 
+	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
+	private List<Biometry> biometries;
+	
 	/*
 	 * hibernate only
 	 */
 	@Deprecated
-	public Card() {}
+	private Card() {}
 	
 	public Card(String cardNumber, Proposal proposal) {
 		this.cardNumber = cardNumber;
 		this.proposal = proposal;
+	}
+
+	public void addBiometry(Biometry biometry) {
+		biometry.setCard(this);
+		biometries.add(biometry);
 	}
 	
 }

@@ -55,7 +55,7 @@ public class Proposal {
 	 * hibernate only
 	 */
 	@Deprecated
-	public Proposal() {}
+	private Proposal() {}
 
 	public Proposal(@NotBlank String document, @NotBlank String name, @NotBlank @Email String email, @NotBlank String address,
 			@NotNull BigDecimal salary) {
