@@ -16,7 +16,7 @@ import feign.Request;
 import feign.Response;
 import feign.Request.Options;
 
-@FeignClient(value="financial", url="http://localhost:9999/api", configuration=FinancialAnalysisConfiguration.class)
+@FeignClient(value="financial", url="${financial.url}", configuration=FinancialAnalysisConfiguration.class)
 public interface FinancialAnalysisApi {
 
 	@PostMapping("/solicitacao")
