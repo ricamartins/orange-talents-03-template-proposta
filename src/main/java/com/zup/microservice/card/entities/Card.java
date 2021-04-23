@@ -1,4 +1,4 @@
-package com.zup.microservice.card;
+package com.zup.microservice.card.entities;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.zup.microservice.proposal.Proposal;
+import com.zup.microservice.proposal.entities.Proposal;
 
 @Entity
 @Table(name="tb_cards")
@@ -29,6 +29,9 @@ public class Card {
 	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
 	private List<Biometry> biometries;
 	
+	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
+	private List<Blocking> blockings;
+	
 	/*
 	 * hibernate only
 	 */
@@ -44,5 +47,12 @@ public class Card {
 		biometry.setCard(this);
 		biometries.add(biometry);
 	}
+
+	public void addBlocking(Blocking blocking) {
+		blocking.setCard(this);
+		blockings.add(blocking);
+	}
+
+	
 	
 }

@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal;
+package com.zup.microservice.proposal.controllers;
 
 import java.net.URI;
 import java.util.Optional;
@@ -17,10 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.zup.microservice.card.CardApi;
-import com.zup.microservice.card.CardRequest;
-import com.zup.microservice.card.CardResponse;
-import com.zup.microservice.proposal.Proposal.ProposalStatus;
+import com.zup.microservice.card.apis.CardApi;
+import com.zup.microservice.card.dto.CardRequest;
+import com.zup.microservice.card.dto.CardResponse;
+import com.zup.microservice.proposal.apis.FinancialAnalysisApi;
+import com.zup.microservice.proposal.dto.FinancialAnalysisSolicitation;
+import com.zup.microservice.proposal.dto.ProposalRequest;
+import com.zup.microservice.proposal.dto.ProposalResponse;
+import com.zup.microservice.proposal.entities.Proposal;
+import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
+import com.zup.microservice.proposal.repositories.ProposalRepository;
 
 import feign.FeignException.FeignClientException;
 

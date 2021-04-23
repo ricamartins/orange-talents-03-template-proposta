@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal;
+package com.zup.microservice.proposal.entities;
 
 import java.math.BigDecimal;
 import java.util.function.Function;
@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.zup.microservice.card.Card;
+import com.zup.microservice.card.entities.Card;
 
 @Entity
 @Table(name="tb_proposals")

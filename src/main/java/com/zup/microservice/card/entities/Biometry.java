@@ -1,4 +1,4 @@
-package com.zup.microservice.card;
+package com.zup.microservice.card.entities;
 
 import java.time.LocalDateTime;
 

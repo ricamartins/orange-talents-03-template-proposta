@@ -1,18 +1,19 @@
-package com.zup.microservice.proposal;
+package com.zup.microservice.proposal.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zup.microservice.proposal.entities.Proposal;
 
 public class FinancialAnalysisSolicitation {
 
 	@JsonProperty("documento")
-	final String document;
+	public final String document;
 	@JsonProperty("nome")
-	final String name;
+	public final String name;
 	@JsonProperty("idProposta")
-	final String proposalId;
+	public final String proposalId;
 	@JsonProperty("resultadoSolicitacao")
-	final String status;
+	public final String status;
 	
 	public FinancialAnalysisSolicitation(Proposal proposal) {
 		this.document = proposal.getDocument();

@@ -1,7 +1,7 @@
-package com.zup.microservice.card;
+package com.zup.microservice.card.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.zup.microservice.proposal.Proposal;
+import com.zup.microservice.proposal.entities.Proposal;
 
 public class CardRequest {
 

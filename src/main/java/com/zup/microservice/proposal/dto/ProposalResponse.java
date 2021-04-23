@@ -1,8 +1,9 @@
-package com.zup.microservice.proposal;
+package com.zup.microservice.proposal.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import com.zup.microservice.proposal.Proposal.ProposalStatus;
+import com.zup.microservice.proposal.entities.Proposal;
+import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
 
 @JsonAutoDetect(fieldVisibility=Visibility.ANY)
 public class ProposalResponse {

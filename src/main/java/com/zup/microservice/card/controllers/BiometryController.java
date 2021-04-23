@@ -1,4 +1,4 @@
-package com.zup.microservice.card;
+package com.zup.microservice.card.controllers;
 
 import java.net.URI;
 import java.util.Optional;
@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.zup.microservice.card.dto.BiometryRequest;
+import com.zup.microservice.card.entities.Biometry;
+import com.zup.microservice.card.entities.Card;
+import com.zup.microservice.card.repositories.CardRepository;
 
 @RestController
 @RequestMapping("/cards/{id}/biometries")

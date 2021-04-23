@@ -1,4 +1,4 @@
-package com.zup.microservice.card;
+package com.zup.microservice.card.dto;
 
 import java.util.Base64;
 
@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zup.microservice.card.entities.Biometry;
 
 public class BiometryRequest {
 

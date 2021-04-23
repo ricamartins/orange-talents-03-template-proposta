@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal;
+package com.zup.microservice.proposal.dto;
 
 import java.math.BigDecimal;
 
@@ -8,18 +8,19 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
+import com.zup.microservice.proposal.entities.Proposal;
 import com.zup.microservice.validations.CPForCNPJ;
 
 public class ProposalRequest {
 
 	@NotBlank @CPForCNPJ @Pattern(regexp="[0-9]+", message="Deve conter apenas dígitos")
-	final String document;
+	public final String document;
 	
 	@NotBlank
-	final String name;
+	public final String name;
 	
 	@NotBlank @Email
-	final String email;
+	public final String email;
 	
 	@NotBlank
 	final String address;
