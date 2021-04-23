@@ -60,6 +60,7 @@ services:
       DB_PASSWORD: password
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
+      KEYCLOAK_FRONTEND_URL: http://localhost:18080/auth
       POSTGRES_PORT_5432_TCP_ADDR: 127.0.0.1
 
   analise:
@@ -152,6 +153,7 @@ services:
       DB_PASSWORD: p455w0rd
       FINANCIAL_URL: http://analise:9999/api
       ACCOUNTS_URL: http://contas:8888/api/cartoes
+      AUTH_SERVER_URL: http://keycloak:8080/auth
 
   mysql:
     image: mysql
