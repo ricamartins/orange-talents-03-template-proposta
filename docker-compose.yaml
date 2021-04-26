@@ -154,6 +154,8 @@ services:
       FINANCIAL_URL: http://analise:9999/api
       ACCOUNTS_URL: http://contas:8888/api/cartoes
       AUTH_SERVER_URL: http://keycloak:8080/auth
+      APPLICATION_NAME: proposals service
+      ENVIRONMENT: docker development
 
   mysql:
     image: mysql
