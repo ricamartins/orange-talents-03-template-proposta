@@ -32,6 +32,9 @@ public class Card {
 	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
 	private List<Blocking> blockings;
 	
+	@OneToMany(mappedBy="card", cascade=CascadeType.ALL)
+	private List<Travel> travels;
+	
 	/*
 	 * hibernate only
 	 */
@@ -43,6 +46,10 @@ public class Card {
 		this.proposal = proposal;
 	}
 
+	public Long getId() {
+		return id;
+	}
+	
 	public void addBiometry(Biometry biometry) {
 		biometry.setCard(this);
 		biometries.add(biometry);
@@ -53,6 +60,9 @@ public class Card {
 		blockings.add(blocking);
 	}
 
-	
-	
+	public void addTravel(Travel travel) {
+		travel.setCard(this);
+		travels.add(travel);
+	}
+
 }

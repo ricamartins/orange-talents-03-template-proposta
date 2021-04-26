@@ -22,12 +22,12 @@ import com.zup.microservice.validations.ResponseError;
 
 @RestController
 @RequestMapping("/cards/{id}")
-public class CardController {
+public class BlockingController {
 
 	private CardRepository repository;
 	private CardApi cardApi;
 	
-	public CardController(CardRepository repository, CardApi cardApi) {
+	public BlockingController(CardRepository repository, CardApi cardApi) {
 		this.repository = repository;
 		this.cardApi = cardApi;
 	}

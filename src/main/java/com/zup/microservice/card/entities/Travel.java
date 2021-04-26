@@ -1,5 +1,6 @@
 package com.zup.microservice.card.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -12,20 +13,24 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name="tb_blockings")
-public class Blocking {
+@Table(name="tb_travels")
+public class Travel {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	private String destination;
+	
+	private LocalDate endDate;
+	
 	@CreationTimestamp
-	private LocalDateTime blockedAt;
+	private LocalDateTime createdAt;
 	
 	private String ipAddress;
 	
 	private String userAgent;
-
+	
 	@ManyToOne
 	private Card card;
 
@@ -33,9 +38,11 @@ public class Blocking {
 	 * hibernate only
 	 */
 	@Deprecated
-	private Blocking() {}
+	private Travel() {}
 	
-	public Blocking(String ipAddress, String userAgent) {
+	public Travel(String destination, LocalDate endDate, String ipAddress, String userAgent) {
+		this.destination = destination;
+		this.endDate = endDate;
 		this.ipAddress = ipAddress;
 		this.userAgent = userAgent;
 	}
