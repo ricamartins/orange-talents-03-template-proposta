@@ -15,10 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.zup.microservice.card.dto.BiometryRequest;
 import com.zup.microservice.card.entities.Biometry;
 import com.zup.microservice.card.entities.Card;
-import com.zup.microservice.card.repositories.CardRepository;
+import com.zup.microservice.card.entities.CardRepository;
 
 @RestController
 @RequestMapping("/cards/{id}/biometries")

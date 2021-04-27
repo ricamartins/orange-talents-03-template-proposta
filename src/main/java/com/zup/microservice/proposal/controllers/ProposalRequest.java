@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal.dto;
+package com.zup.microservice.proposal.controllers;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.zup.microservice.card.dto;
+package com.zup.microservice.card.controllers;
 
 import java.time.LocalDate;
 
@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zup.microservice.card.apis.TravelNoticeRequest;
 import com.zup.microservice.card.entities.Travel;
 
 public class TravelRequest {
@@ -32,7 +33,7 @@ public class TravelRequest {
 		return new Travel(destination, endDate, ipAddress, userAgent);
 	}
 
-	public TravelNoticeRequest toTravelNoticeRequest() {
+	public TravelNoticeRequest toFeignRequest() {
 		return new TravelNoticeRequest(destination, endDate);
 	}
 	

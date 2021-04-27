@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal.repositories;
+package com.zup.microservice.proposal.entities;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.zup.microservice.proposal.entities.Proposal;
 import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
 
 @Repository

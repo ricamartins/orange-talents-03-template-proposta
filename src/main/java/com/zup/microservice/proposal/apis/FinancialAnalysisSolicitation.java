@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal.dto;
+package com.zup.microservice.proposal.apis;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

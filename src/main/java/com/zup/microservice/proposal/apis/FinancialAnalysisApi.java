@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.zup.microservice.proposal.apis.FinancialAnalysisApi.FinancialAnalysisConfiguration;
-import com.zup.microservice.proposal.dto.FinancialAnalysisSolicitation;
 
 import feign.Client;
 import feign.Request;

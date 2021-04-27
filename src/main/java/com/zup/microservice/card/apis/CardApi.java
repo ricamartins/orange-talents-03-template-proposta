@@ -6,12 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.zup.microservice.card.dto.BlockingRequest;
-import com.zup.microservice.card.dto.CardApiResult;
-import com.zup.microservice.card.dto.CardRequest;
-import com.zup.microservice.card.dto.CardResponse;
-import com.zup.microservice.card.dto.TravelNoticeRequest;
-
 @FeignClient(value="accounts", url="${accounts.url}")
 public interface CardApi {
 
@@ -29,5 +23,8 @@ public interface CardApi {
 
 	@PostMapping("/{id}/avisos")
 	CardApiResult travelNotice(@PathVariable("id") String id, TravelNoticeRequest request);
+
+	@PostMapping("/{id}/carteiras")
+	CardApiResult associateDigitalWallet(@PathVariable("id") String id, DigitalWalletFeignRequest request);
 
 }

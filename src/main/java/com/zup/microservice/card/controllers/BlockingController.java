@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zup.microservice.card.apis.BlockingRequest;
 import com.zup.microservice.card.apis.CardApi;
-import com.zup.microservice.card.dto.BlockingRequest;
-import com.zup.microservice.card.dto.CardApiResult;
-import com.zup.microservice.card.dto.CardResponse;
+import com.zup.microservice.card.apis.CardApiResult;
+import com.zup.microservice.card.apis.CardResponse;
 import com.zup.microservice.card.entities.Blocking;
 import com.zup.microservice.card.entities.Card;
-import com.zup.microservice.card.repositories.CardRepository;
+import com.zup.microservice.card.entities.CardRepository;
 import com.zup.microservice.validations.ResponseError;
 
 @RestController

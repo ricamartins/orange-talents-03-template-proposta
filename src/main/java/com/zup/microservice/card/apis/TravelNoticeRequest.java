@@ -1,4 +1,4 @@
-package com.zup.microservice.card.dto;
+package com.zup.microservice.card.apis;
 
 import java.time.LocalDate;
 

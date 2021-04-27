@@ -3,7 +3,6 @@ package com.zup.microservice.card.controllers;
 import java.net.URI;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -19,55 +18,55 @@ import com.zup.microservice.card.apis.CardApi;
 import com.zup.microservice.card.apis.CardApiResult;
 import com.zup.microservice.card.entities.Card;
 import com.zup.microservice.card.entities.CardRepository;
-import com.zup.microservice.card.entities.Travel;
+import com.zup.microservice.card.entities.DigitalWallet;
 import com.zup.microservice.validations.ResponseError;
+
+import feign.FeignException;
 
 @RestController
 @RequestMapping("/cards/{id}")
-public class TravelController {
+public class DigitalWalletController {
 
 	private CardRepository repository;
-
 	private CardApi cardApi;
-	
-	public TravelController(CardRepository repository, CardApi cardApi) {
+
+	public DigitalWalletController(CardRepository repository, CardApi cardApi) {
 		this.repository = repository;
 		this.cardApi = cardApi;
 	}
 	
-	@PostMapping("/travels")
-	public ResponseEntity<?> travelNotice(@PathVariable String id, @RequestBody @Valid TravelRequest request,
-			HttpServletRequest httpRequest, UriComponentsBuilder uriBuilder) {
+	@PostMapping("/wallets")
+	public ResponseEntity<?> associateDigitalWallet(@PathVariable String id, @RequestBody @Valid DigitalWalletRequest request,
+			UriComponentsBuilder uriBuilder) {
 		
 		Optional<Card> optCard = repository.findByCardNumber(id);
 		
 		if (optCard.isEmpty())
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ResponseError("cardNumber:Número de cartão não cadastrado"));
-		
-		CardApiResult result = cardApi.travelNotice(id, request.toFeignRequest());
-		
-		if (!result.isCreated())
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new ResponseError("card:Não foi possível gerar o aviso de viagem"));
-		
+
 		Card card = optCard.get();
-		card.addTravel(createTravelEntity(request, httpRequest));
+		if (card.hasDigitalWallet(request.digitalWalletService))
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+					.body(new ResponseError("digitalWalletService:Carteira digital já cadastrada para este cartão"));
+		
+		CardApiResult result;
+		try {
+			result = cardApi.associateDigitalWallet(id, request.toFeignRequest());
+		} catch (FeignException.UnprocessableEntity e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseError("card:Não foi possível associar o cartão com essa carteira digital"));
+		}
+		
+		if (!result.isAssociated())
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ResponseError("card:Não foi possível associar o cartão com essa carteira digital"));
+		
+		DigitalWallet wallet = request.toEntity(result.getId());
+		card.addDigitalWallet(wallet);
 		repository.save(card);
 		
-		URI uri = uriBuilder.path("/{id}").build(card.getId());
+		URI uri = uriBuilder.path("/{id}").build(wallet.getId());
 		return ResponseEntity.created(uri).build();
-	}
-	
-	private Travel createTravelEntity(TravelRequest travelRequest, HttpServletRequest request) {
-
-		String ipAddress = request.getHeader("X-Forwarded-For");
-		
-		if (ipAddress == null)
-			ipAddress = request.getRemoteAddr();
-		
-		String userAgent = request.getHeader("User-Agent");
-		
-		return travelRequest.toEntity(ipAddress, userAgent);
 	}
 }

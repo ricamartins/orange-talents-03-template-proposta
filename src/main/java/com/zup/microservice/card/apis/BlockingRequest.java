@@ -1,4 +1,4 @@
-package com.zup.microservice.card.dto;
+package com.zup.microservice.card.apis;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

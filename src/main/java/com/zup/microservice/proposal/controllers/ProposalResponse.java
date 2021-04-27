@@ -1,4 +1,4 @@
-package com.zup.microservice.proposal.dto;
+package com.zup.microservice.proposal.controllers;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
