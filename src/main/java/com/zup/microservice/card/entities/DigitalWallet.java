@@ -40,7 +40,7 @@ public class DigitalWallet {
 	}
 
 	public enum DigitalWalletService {
-		PAYPAL
+		PAYPAL, SAMSUNG_PAY
 	}
 
 	public DigitalWalletService getDigitalWalletService() {
