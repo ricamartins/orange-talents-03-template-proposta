@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.zup.microservice.card.apis.CardApi;
+import com.zup.microservice.card.dto.CardApiResult;
 import com.zup.microservice.card.dto.TravelRequest;
 import com.zup.microservice.card.entities.Card;
 import com.zup.microservice.card.entities.Travel;
@@ -27,8 +29,11 @@ public class TravelController {
 
 	private CardRepository repository;
 
-	public TravelController(CardRepository repository) {
+	private CardApi cardApi;
+	
+	public TravelController(CardRepository repository, CardApi cardApi) {
 		this.repository = repository;
+		this.cardApi = cardApi;
 	}
 	
 	@PostMapping("/travels")
@@ -40,6 +45,12 @@ public class TravelController {
 		if (optCard.isEmpty())
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ResponseError("cardNumber:Número de cartão não cadastrado"));
+		
+		CardApiResult result = cardApi.travelNotice(id, request.toTravelNoticeRequest());
+		
+		if (!result.isCreated())
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new ResponseError("card:Não foi possível gerar o aviso de viagem"));
 		
 		Card card = optCard.get();
 		card.addTravel(createTravelEntity(request, httpRequest));

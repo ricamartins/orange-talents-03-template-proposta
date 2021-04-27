@@ -31,5 +31,9 @@ public class TravelRequest {
 	public Travel toEntity(String ipAddress, String userAgent) {
 		return new Travel(destination, endDate, ipAddress, userAgent);
 	}
+
+	public TravelNoticeRequest toTravelNoticeRequest() {
+		return new TravelNoticeRequest(destination, endDate);
+	}
 	
 }

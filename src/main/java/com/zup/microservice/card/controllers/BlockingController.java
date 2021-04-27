@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zup.microservice.card.apis.CardApi;
 import com.zup.microservice.card.dto.BlockingRequest;
-import com.zup.microservice.card.dto.BlockingResult;
+import com.zup.microservice.card.dto.CardApiResult;
 import com.zup.microservice.card.dto.CardResponse;
 import com.zup.microservice.card.entities.Blocking;
 import com.zup.microservice.card.entities.Card;
@@ -49,7 +49,7 @@ public class BlockingController {
 					.body(new ResponseError("card:Cartão já está bloqueado"));
 		
 		
-		BlockingResult result = cardApi.block(id, new BlockingRequest("proposals"));
+		CardApiResult result = cardApi.block(id, new BlockingRequest("proposals"));
 		
 		if (!result.isBlocked())
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)

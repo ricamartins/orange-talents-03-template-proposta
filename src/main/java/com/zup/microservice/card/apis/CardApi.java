@@ -7,15 +7,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zup.microservice.card.dto.BlockingRequest;
-import com.zup.microservice.card.dto.BlockingResult;
+import com.zup.microservice.card.dto.CardApiResult;
 import com.zup.microservice.card.dto.CardRequest;
 import com.zup.microservice.card.dto.CardResponse;
+import com.zup.microservice.card.dto.TravelNoticeRequest;
 
 @FeignClient(value="accounts", url="${accounts.url}")
 public interface CardApi {
 
 	@PostMapping
 	CardResponse create(CardRequest request);
+	
 	@GetMapping
 	CardResponse getByProposalId(@RequestParam("idProposta") String proposalId);
 
@@ -23,7 +25,9 @@ public interface CardApi {
 	CardResponse getById(@PathVariable("id") String id);
 	
 	@PostMapping("/{id}/bloqueios")
-	BlockingResult block(@PathVariable("id") String id, BlockingRequest request);
+	CardApiResult block(@PathVariable("id") String id, BlockingRequest request);
 
+	@PostMapping("/{id}/avisos")
+	CardApiResult travelNotice(@PathVariable("id") String id, TravelNoticeRequest request);
 
 }
