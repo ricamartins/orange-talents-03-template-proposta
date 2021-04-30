@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.cloud.sleuth.annotation.ContinueSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +34,8 @@ public class BlockingController {
 		this.cardApi = cardApi;
 	}
 	
-	@PostMapping("/block")
-	public ResponseEntity<?> blockCard(@PathVariable String id, HttpServletRequest request) {
+	@PostMapping("/block") @ContinueSpan
+	public ResponseEntity<?> blockCard(@PathVariable @SpanTag("card.id") String id, HttpServletRequest request) {
 		Optional<Card> optCard = repository.findByCardNumber(id);
 		
 		if (optCard.isEmpty())

@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.cloud.sleuth.annotation.ContinueSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +37,8 @@ public class DigitalWalletController {
 		this.cardApi = cardApi;
 	}
 	
-	@PostMapping("/wallets")
-	public ResponseEntity<?> associateDigitalWallet(@PathVariable String id, @RequestBody @Valid DigitalWalletRequest request,
+	@PostMapping("/wallets") @ContinueSpan
+	public ResponseEntity<?> associateDigitalWallet(@PathVariable @SpanTag("card.id") String id, @RequestBody @Valid DigitalWalletRequest request,
 			UriComponentsBuilder uriBuilder) {
 		
 		Optional<Card> optCard = repository.findByCardNumber(id);

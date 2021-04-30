@@ -23,8 +23,8 @@ import com.zup.microservice.card.apis.CardResponse;
 import com.zup.microservice.proposal.apis.FinancialAnalysisApi;
 import com.zup.microservice.proposal.apis.FinancialAnalysisSolicitation;
 import com.zup.microservice.proposal.entities.Proposal;
-import com.zup.microservice.proposal.entities.ProposalRepository;
 import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
+import com.zup.microservice.proposal.entities.ProposalRepository;
 
 import feign.FeignException.FeignClientException;
 
@@ -36,15 +36,15 @@ public class ProposalController {
 	private FinancialAnalysisApi financialApi;
 	private CardApi cardApi;
 	
-	public ProposalController(ProposalRepository repository, FinancialAnalysisApi financialApi,
-			CardApi cardApi) {
+	public ProposalController(ProposalRepository repository, FinancialAnalysisApi financialApi, CardApi cardApi) {
 		this.repository = repository;
 		this.financialApi = financialApi;
 		this.cardApi = cardApi;
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id}") 
 	public ResponseEntity<ProposalResponse> getById(@PathVariable Long id) {
+		
 		Optional<Proposal> proposal = repository.findById(id);
 		if (proposal.isEmpty())
 			return ResponseEntity.notFound().build();
@@ -59,7 +59,7 @@ public class ProposalController {
 			throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "document:Já há uma proposta atrelada a este documento");
 		
 		Proposal proposal = repository.save(request.toEntity());
-
+		
 		FinancialAnalysisSolicitation solicitation = financialApi.analyse(proposal.map(FinancialAnalysisSolicitation::new));
 
 		proposal.setStatus(solicitation.status);

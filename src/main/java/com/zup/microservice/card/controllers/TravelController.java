@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.cloud.sleuth.annotation.ContinueSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +27,8 @@ import com.zup.microservice.validations.ResponseError;
 @RestController
 @RequestMapping("/cards/{id}")
 public class TravelController {
-
+	
 	private CardRepository repository;
-
 	private CardApi cardApi;
 	
 	public TravelController(CardRepository repository, CardApi cardApi) {
@@ -35,8 +36,8 @@ public class TravelController {
 		this.cardApi = cardApi;
 	}
 	
-	@PostMapping("/travels")
-	public ResponseEntity<?> travelNotice(@PathVariable String id, @RequestBody @Valid TravelRequest request,
+	@PostMapping("/travels") @ContinueSpan
+	public ResponseEntity<?> travelNotice(@PathVariable @SpanTag("card.id") String id, @RequestBody @Valid TravelRequest request,
 			HttpServletRequest httpRequest, UriComponentsBuilder uriBuilder) {
 		
 		Optional<Card> optCard = repository.findByCardNumber(id);

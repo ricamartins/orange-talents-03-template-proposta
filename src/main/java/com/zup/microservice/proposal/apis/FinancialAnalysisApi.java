@@ -14,8 +14,8 @@ import com.zup.microservice.proposal.apis.FinancialAnalysisApi.FinancialAnalysis
 
 import feign.Client;
 import feign.Request;
-import feign.Response;
 import feign.Request.Options;
+import feign.Response;
 
 @FeignClient(value="financial", url="${financial.url}", configuration=FinancialAnalysisConfiguration.class)
 public interface FinancialAnalysisApi {
