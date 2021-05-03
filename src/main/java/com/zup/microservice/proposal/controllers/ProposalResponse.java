@@ -2,6 +2,7 @@ package com.zup.microservice.proposal.controllers;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.zup.microservice.card.entities.Card.CardStatus;
 import com.zup.microservice.proposal.entities.Proposal;
 import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
 
@@ -14,14 +15,15 @@ public class ProposalResponse {
 	
 	final ProposalStatus status;
 
-	final String cardStatus;
+	final CardStatus cardStatus;
 
 	public ProposalResponse(Proposal proposal) {
 		this.id = proposal.getId();
 		this.email = proposal.getEmail();
 		this.status = proposal.getStatus();
-		this.cardStatus = proposal.isEligible() ?  proposal.hasCard() ?
-				"PRONTO" : "EM_PROCESSAMENTO" : "NAO_APLICAVEL";
+		this.cardStatus = proposal.hasCard() ? proposal.getCard().getStatus() :
+							proposal.isEligible() ? CardStatus.EM_PROCESSAMENTO :
+								CardStatus.NAO_APLICAVEL;
 	}
 	
 }

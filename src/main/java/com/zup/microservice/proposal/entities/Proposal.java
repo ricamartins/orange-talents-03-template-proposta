@@ -3,7 +3,6 @@ package com.zup.microservice.proposal.entities;
 import java.math.BigDecimal;
 import java.util.function.Function;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -50,7 +49,7 @@ public class Proposal {
 	@Enumerated(EnumType.STRING)
 	private ProposalStatus status;
 
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="proposal")
 	private Card card;
 	
 	/*
@@ -82,6 +81,10 @@ public class Proposal {
 
 	public String getEmail() {
 		return email;
+	}
+	
+	public Card getCard() {
+		return card;
 	}
 	
 	public void setCard(Card card) {

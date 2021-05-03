@@ -18,26 +18,30 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.zup.microservice.card.apis.CardApi;
-import com.zup.microservice.card.apis.CardRequest;
 import com.zup.microservice.card.apis.CardResponse;
+import com.zup.microservice.card.entities.Card;
+import com.zup.microservice.card.entities.Card.CardStatus;
+import com.zup.microservice.card.entities.CardRepository;
 import com.zup.microservice.proposal.apis.FinancialAnalysisApi;
 import com.zup.microservice.proposal.apis.FinancialAnalysisSolicitation;
 import com.zup.microservice.proposal.entities.Proposal;
 import com.zup.microservice.proposal.entities.Proposal.ProposalStatus;
 import com.zup.microservice.proposal.entities.ProposalRepository;
 
-import feign.FeignException.FeignClientException;
+import feign.FeignException;
 
 @RestController
 @RequestMapping("/proposals")
 public class ProposalController {
 
 	private ProposalRepository repository;
+	private CardRepository cardRepository;
 	private FinancialAnalysisApi financialApi;
 	private CardApi cardApi;
 	
-	public ProposalController(ProposalRepository repository, FinancialAnalysisApi financialApi, CardApi cardApi) {
+	public ProposalController(ProposalRepository repository, CardRepository cardRepository, FinancialAnalysisApi financialApi, CardApi cardApi) {
 		this.repository = repository;
+		this.cardRepository = cardRepository;
 		this.financialApi = financialApi;
 		this.cardApi = cardApi;
 	}
@@ -64,9 +68,6 @@ public class ProposalController {
 
 		proposal.setStatus(solicitation.status);
 		
-		if (proposal.isEligible())
-			cardApi.create(proposal.map(CardRequest::new));
-			
 		repository.save(proposal);
 		
 		URI uri = uriBuilder.path("/proposals/{id}").build(proposal.getId());
@@ -79,11 +80,10 @@ public class ProposalController {
 			.forEach(proposal -> {
 				try {
 					CardResponse response = cardApi.getByProposalId(proposal.getId().toString());
-					proposal.setCard(response.toEntity(proposal));
-					repository.save(proposal);
-				} catch (FeignClientException e) {
-					if (e.status() != HttpStatus.NOT_FOUND.value())
-						throw new ResponseStatusException(HttpStatus.valueOf(e.status()), "cartao:Não faço ideia");
+					Card card = response.toEntity(CardStatus.ATIVO, proposal);
+					cardRepository.save(card);
+				} catch (FeignException.NotFound e) {
+					throw new ResponseStatusException(HttpStatus.valueOf(e.status()), "cartao:Não faço ideia");
 				}
 			});
 	}

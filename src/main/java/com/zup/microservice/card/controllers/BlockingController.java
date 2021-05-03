@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.zup.microservice.card.apis.BlockingRequest;
 import com.zup.microservice.card.apis.CardApi;
 import com.zup.microservice.card.apis.CardApiResult;
-import com.zup.microservice.card.apis.CardResponse;
 import com.zup.microservice.card.entities.Blocking;
 import com.zup.microservice.card.entities.Card;
 import com.zup.microservice.card.entities.CardRepository;
 import com.zup.microservice.validations.ResponseError;
+
+import feign.FeignException;
 
 @RestController
 @RequestMapping("/cards/{id}")
@@ -44,14 +45,7 @@ public class BlockingController {
 		
 		Card card = optCard.get();
 		
-		CardResponse cardResponse = cardApi.getById(id);
-		System.out.println(cardResponse);
-		if (cardResponse.isBlocked())
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-					.body(new ResponseError("card:Cartão já está bloqueado"));
-		
-		
-		CardApiResult result = cardApi.block(id, new BlockingRequest("proposals"));
+		CardApiResult result = blockCardRequest(id);
 		
 		if (!result.isBlocked())
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -62,6 +56,14 @@ public class BlockingController {
 		repository.save(card);
 		
 		return ResponseEntity.ok().build();
+	}
+
+	private CardApiResult blockCardRequest(String id) {
+		try {
+			return cardApi.block(id, new BlockingRequest("proposals"));
+		} catch (FeignException.UnprocessableEntity e) {
+			return new CardApiResult("FALHA", null);
+		}
 	}
 
 	private Blocking createBlockingEntity(HttpServletRequest request) {
