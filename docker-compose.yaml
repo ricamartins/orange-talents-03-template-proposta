@@ -156,6 +156,7 @@ services:
       ACCOUNTS_URL: http://contas:8888/api/cartoes
       AUTH_SERVER_URL: http://keycloak:8080/auth
       JAEGER_COLLECTOR_URL: http://jaeger:9411
+      ENCRYPTION_KEY: 77217A25432A46294A404E635266556A
       APPLICATION_NAME: proposals service
       ENVIRONMENT: docker development
 

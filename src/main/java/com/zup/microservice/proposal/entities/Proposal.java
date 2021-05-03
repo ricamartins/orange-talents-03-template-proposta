@@ -5,6 +5,7 @@ import java.util.function.Function;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +32,7 @@ public class Proposal {
 	private Long id;
 	
 	@NotBlank @Column(unique=true)
+	@Convert(converter=EncryptionConverter.class)
 	private String document;
 	
 	@NotBlank

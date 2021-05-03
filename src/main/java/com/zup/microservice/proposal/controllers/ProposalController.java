@@ -48,7 +48,7 @@ public class ProposalController {
 		Optional<Proposal> proposal = repository.findById(id);
 		if (proposal.isEmpty())
 			return ResponseEntity.notFound().build();
-			
+
 		return ResponseEntity.ok(proposal.get().map(ProposalResponse::new));
 	}
 	
